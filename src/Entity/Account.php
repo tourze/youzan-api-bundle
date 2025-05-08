@@ -6,9 +6,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use DoctrineEnhanceBundle\Traits\SnowflakeKeyAware;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Tourze\DoctrineIndexedBundle\Attribute\IndexColumn;
+use Tourze\DoctrineSnowflakeBundle\Service\SnowflakeIdGenerator;
 use Tourze\DoctrineTimestampBundle\Attribute\CreateTimeColumn;
 use Tourze\DoctrineTimestampBundle\Attribute\UpdateTimeColumn;
 use Tourze\EasyAdmin\Attribute\Column\ExportColumn;
@@ -23,7 +23,25 @@ use YouzanApiBundle\Repository\AccountRepository;
 #[ORM\Table(name: 'ims_youzan_account', options: ['comment' => '有赞账号表'])]
 class Account
 {
-    use SnowflakeKeyAware;
+    #[ExportColumn]
+    #[ListColumn(order: -1, sorter: true)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(SnowflakeIdGenerator::class)]
+    #[ORM\Column(type: Types::BIGINT, nullable: false, options: ['comment' => 'ID'])]
+    private ?string $id = null;
+
+    #[ORM\Column(type: 'string', length: 64, options: ['comment' => '账号名称'])]
+    private string $name;
+
+    #[ORM\Column(type: 'string', length: 64, unique: true, options: ['comment' => '客户端ID'])]
+    private string $clientId;
+
+    #[ORM\Column(type: 'string', length: 64, options: ['comment' => '客户端密钥'])]
+    private string $clientSecret;
+
+    #[ORM\ManyToMany(targetEntity: Shop::class, mappedBy: 'accounts')]
+    private Collection $shops;
 
     #[Filterable]
     #[IndexColumn]
@@ -42,41 +60,14 @@ class Account
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['comment' => '更新时间'])]
     private ?\DateTimeInterface $updateTime = null;
 
-    public function setCreateTime(?\DateTimeInterface $createdAt): void
-    {
-        $this->createTime = $createdAt;
-    }
-
-    public function getCreateTime(): ?\DateTimeInterface
-    {
-        return $this->createTime;
-    }
-
-    public function setUpdateTime(?\DateTimeInterface $updateTime): void
-    {
-        $this->updateTime = $updateTime;
-    }
-
-    public function getUpdateTime(): ?\DateTimeInterface
-    {
-        return $this->updateTime;
-    }
-
-    #[ORM\Column(type: 'string', length: 64, options: ['comment' => '账号名称'])]
-    private string $name;
-
-    #[ORM\Column(type: 'string', length: 64, unique: true, options: ['comment' => '客户端ID'])]
-    private string $clientId;
-
-    #[ORM\Column(type: 'string', length: 64, options: ['comment' => '客户端密钥'])]
-    private string $clientSecret;
-
-    #[ORM\ManyToMany(targetEntity: Shop::class, mappedBy: 'accounts')]
-    private Collection $shops;
-
     public function __construct()
     {
         $this->shops = new ArrayCollection();
+    }
+
+    public function getId(): ?string
+    {
+        return $this->id;
     }
 
     public function getName(): string
@@ -133,5 +124,25 @@ class Account
     {
         $this->shops->removeElement($shop);
         return $this;
+    }
+
+    public function setCreateTime(?\DateTimeInterface $createdAt): void
+    {
+        $this->createTime = $createdAt;
+    }
+
+    public function getCreateTime(): ?\DateTimeInterface
+    {
+        return $this->createTime;
+    }
+
+    public function setUpdateTime(?\DateTimeInterface $updateTime): void
+    {
+        $this->updateTime = $updateTime;
+    }
+
+    public function getUpdateTime(): ?\DateTimeInterface
+    {
+        return $this->updateTime;
     }
 }

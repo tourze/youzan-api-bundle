@@ -6,9 +6,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use DoctrineEnhanceBundle\Traits\SnowflakeKeyAware;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Tourze\DoctrineIndexedBundle\Attribute\IndexColumn;
+use Tourze\DoctrineSnowflakeBundle\Service\SnowflakeIdGenerator;
 use Tourze\DoctrineTimestampBundle\Attribute\CreateTimeColumn;
 use Tourze\DoctrineTimestampBundle\Attribute\UpdateTimeColumn;
 use Tourze\EasyAdmin\Attribute\Column\ExportColumn;
@@ -23,7 +23,26 @@ use YouzanApiBundle\Repository\ShopRepository;
 #[ORM\Table(name: 'ims_youzan_shop', options: ['comment' => '有赞店铺表'])]
 class Shop
 {
-    use SnowflakeKeyAware;
+    #[ExportColumn]
+    #[ListColumn(order: -1, sorter: true)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(SnowflakeIdGenerator::class)]
+    #[ORM\Column(type: Types::BIGINT, nullable: false, options: ['comment' => 'ID'])]
+    private ?string $id = null;
+
+    #[ORM\Column(type: 'integer', unique: true, options: ['comment' => '有赞店铺ID'])]
+    private int $kdtId;
+
+    #[ORM\Column(type: 'string', length: 64, options: ['comment' => '店铺名称'])]
+    private string $name;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['comment' => '店铺Logo'])]
+    private ?string $logo = null;
+
+    #[ORM\ManyToMany(targetEntity: Account::class, inversedBy: 'shops')]
+    #[ORM\JoinTable(name: 'youzan_account_shop')]
+    private Collection $accounts;
 
     #[Filterable]
     #[IndexColumn]
@@ -42,42 +61,14 @@ class Shop
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['comment' => '更新时间'])]
     private ?\DateTimeInterface $updateTime = null;
 
-    public function setCreateTime(?\DateTimeInterface $createdAt): void
-    {
-        $this->createTime = $createdAt;
-    }
-
-    public function getCreateTime(): ?\DateTimeInterface
-    {
-        return $this->createTime;
-    }
-
-    public function setUpdateTime(?\DateTimeInterface $updateTime): void
-    {
-        $this->updateTime = $updateTime;
-    }
-
-    public function getUpdateTime(): ?\DateTimeInterface
-    {
-        return $this->updateTime;
-    }
-
-    #[ORM\Column(type: 'integer', unique: true, options: ['comment' => '有赞店铺ID'])]
-    private int $kdtId;
-
-    #[ORM\Column(type: 'string', length: 64, options: ['comment' => '店铺名称'])]
-    private string $name;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['comment' => '店铺Logo'])]
-    private ?string $logo = null;
-
-    #[ORM\ManyToMany(targetEntity: Account::class, inversedBy: 'shops')]
-    #[ORM\JoinTable(name: 'youzan_account_shop')]
-    private Collection $accounts;
-
     public function __construct()
     {
         $this->accounts = new ArrayCollection();
+    }
+
+    public function getId(): ?string
+    {
+        return $this->id;
     }
 
     public function getKdtId(): int
@@ -138,5 +129,25 @@ class Shop
         }
 
         return $this;
+    }
+
+    public function setCreateTime(?\DateTimeInterface $createdAt): void
+    {
+        $this->createTime = $createdAt;
+    }
+
+    public function getCreateTime(): ?\DateTimeInterface
+    {
+        return $this->createTime;
+    }
+
+    public function setUpdateTime(?\DateTimeInterface $updateTime): void
+    {
+        $this->updateTime = $updateTime;
+    }
+
+    public function getUpdateTime(): ?\DateTimeInterface
+    {
+        return $this->updateTime;
     }
 } 
