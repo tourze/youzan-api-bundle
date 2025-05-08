@@ -4,6 +4,7 @@ namespace YouzanApiBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Youzan\Open\Client;
+use Youzan\Open\Token;
 use YouzanApiBundle\Entity\Account;
 use YouzanApiBundle\Repository\AccountRepository;
 
@@ -33,7 +34,8 @@ class YouzanClientService
         }
 
         // 创建新客户端
-        $client = new Client($clientId, $account->getClientSecret());
+        $resp = (new Token($clientId, $account->getClientSecret()))->getSelfAppToken('YOUR_KDT_ID');
+        $client = new Client($resp['access_token']);
 
         // 缓存客户端
         $this->clientCache[$clientId] = $client;
