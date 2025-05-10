@@ -32,7 +32,7 @@ class ShopTest extends TestCase
     public function testSetAndGetKdtId(): void
     {
         $shop = new Shop();
-        $testKdtId = 'test_kdt_id_123';
+        $testKdtId = 123456;
         
         $this->assertSame($shop, $shop->setKdtId($testKdtId));
         $this->assertSame($testKdtId, $shop->getKdtId());
@@ -87,11 +87,11 @@ class ShopTest extends TestCase
         $shop = new Shop();
         $result = $shop
             ->setName('Test Shop')
-            ->setKdtId('kdt_id_123');
+            ->setKdtId(123456);
         
         $this->assertSame($shop, $result);
         $this->assertSame('Test Shop', $shop->getName());
-        $this->assertSame('kdt_id_123', $shop->getKdtId());
+        $this->assertSame(123456, $shop->getKdtId());
     }
     
     public function testAddMultipleAccounts(): void

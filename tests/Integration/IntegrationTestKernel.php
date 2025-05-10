@@ -39,7 +39,20 @@ class IntegrationTestKernel extends BaseKernel
             'php_errors' => [
                 'log' => true,
             ],
+            // 添加这些选项来解决Symfony框架的废弃警告
+            'validation' => [
+                'email_validation_mode' => 'html5',
+            ],
+            'uid' => [
+                'default_uuid_version' => 7,
+                'time_based_uuid_version' => 7,
+            ],
         ]);
+
+        // 构建绝对路径，避免路径拼接问题
+        $projectDir = $this->getProjectDir();
+        $entityDir = $projectDir . '/packages/youzan-api-bundle/src/Entity';
+        $testEntityDir = $projectDir . '/packages/youzan-api-bundle/tests/Integration/Entity';
 
         // Doctrine 配置 - 使用内存数据库
         $container->extension('doctrine', [
@@ -56,15 +69,15 @@ class IntegrationTestKernel extends BaseKernel
                 'auto_mapping' => true,
                 'mappings' => [
                     'YouzanApiBundle' => [
-                        'is_bundle' => true,
+                        'is_bundle' => false,
                         'type' => 'attribute',
-                        'dir' => '%kernel.project_dir%/packages/youzan-api-bundle/src/Entity',
+                        'dir' => $entityDir,
                         'prefix' => 'YouzanApiBundle\Entity',
                     ],
                     'TestEntities' => [
                         'is_bundle' => false,
                         'type' => 'attribute',
-                        'dir' => '%kernel.project_dir%/packages/youzan-api-bundle/tests/Integration/Entity',
+                        'dir' => $testEntityDir,
                         'prefix' => 'YouzanApiBundle\Tests\Integration\Entity',
                     ],
                 ],
