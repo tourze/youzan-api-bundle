@@ -1,6 +1,6 @@
 <?php
 
-namespace YouzanApiBundle\Tests\Unit\Repository;
+namespace YouzanApiBundle\Tests\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\TestCase;

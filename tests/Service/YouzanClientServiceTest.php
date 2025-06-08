@@ -1,6 +1,6 @@
 <?php
 
-namespace YouzanApiBundle\Tests\Unit\Service;
+namespace YouzanApiBundle\Tests\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;

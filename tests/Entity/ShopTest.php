@@ -1,6 +1,6 @@
 <?php
 
-namespace YouzanApiBundle\Tests\Unit\Entity;
+namespace YouzanApiBundle\Tests\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
