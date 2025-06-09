@@ -10,6 +10,8 @@
     "doctrine/doctrine-bundle": "^2.13",
     "doctrine/orm": "^3.0",
     "doctrine/persistence": "^3.1 || ^4",
+    "easycorp/easyadmin-bundle": "^4",
+    "knplabs/knp-menu": "^3.7",
     "symfony/config": "^6.4",
     "symfony/dependency-injection": "^6.4",
     "symfony/doctrine-bridge": "^6.4",
@@ -19,7 +21,7 @@
     "tourze/doctrine-indexed-bundle": "0.0.*",
     "tourze/doctrine-snowflake-bundle": "0.1.*",
     "tourze/doctrine-timestamp-bundle": "0.0.*",
-    "tourze/symfony-snowflake-bundle": "0.0.*",
+    "tourze/easy-admin-menu-bundle": "0.1.*",
     "youzanyun/open-sdk": "^2.0"
   },
   "require-dev": {
