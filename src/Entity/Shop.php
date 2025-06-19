@@ -24,13 +24,13 @@ class Shop
     #[ORM\Column(type: Types::BIGINT, nullable: false, options: ['comment' => 'ID'])]
     private ?string $id = null;
 
-    #[ORM\Column(type: 'integer', unique: true, options: ['comment' => '有赞店铺ID'])]
+    #[ORM\Column(type: Types::INTEGER, unique: true, options: ['comment' => '有赞店铺ID'])]
     private int $kdtId;
 
-    #[ORM\Column(type: 'string', length: 64, options: ['comment' => '店铺名称'])]
+    #[ORM\Column(type: Types::STRING, length: 64, options: ['comment' => '店铺名称'])]
     private string $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true, options: ['comment' => '店铺Logo'])]
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true, options: ['comment' => '店铺Logo'])]
     private ?string $logo = null;
 
     #[ORM\ManyToMany(targetEntity: Account::class, inversedBy: 'shops')]

@@ -53,19 +53,7 @@ class ShopCrudControllerTest extends TestCase
         $fields = iterator_to_array($this->controller->configureFields('index'));
         
         // 验证返回的是可迭代对象
-        $this->assertIsArray($fields);
         $this->assertNotEmpty($fields);
     }
 
-    public function testConfigureActionsMethod(): void
-    {
-        // 由于Actions是final类，只能测试方法存在性
-        $this->assertTrue(method_exists($this->controller, 'configureActions'));
-    }
-
-    public function testConfigureFiltersMethod(): void
-    {
-        // 由于Filters是final类，只能测试方法存在性
-        $this->assertTrue(method_exists($this->controller, 'configureFilters'));
-    }
 } 

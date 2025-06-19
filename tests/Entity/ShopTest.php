@@ -67,7 +67,7 @@ class ShopTest extends TestCase
     public function testSetAndGetCreateTime(): void
     {
         $shop = new Shop();
-        $dateTime = new \DateTime('2023-05-15 10:00:00');
+        $dateTime = new \DateTimeImmutable('2023-05-15 10:00:00');
         
         $shop->setCreateTime($dateTime);
         $this->assertSame($dateTime, $shop->getCreateTime());
@@ -76,7 +76,7 @@ class ShopTest extends TestCase
     public function testSetAndGetUpdateTime(): void
     {
         $shop = new Shop();
-        $dateTime = new \DateTime('2023-05-15 11:30:00');
+        $dateTime = new \DateTimeImmutable('2023-05-15 11:30:00');
         
         $shop->setUpdateTime($dateTime);
         $this->assertSame($dateTime, $shop->getUpdateTime());

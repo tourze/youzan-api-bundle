@@ -49,7 +49,7 @@ class YouzanClientService
     public function getClientByClientId(string $clientId): ?Client
     {
         $account = $this->accountRepository->findByClientId($clientId);
-        if (!$account) {
+        if (null === $account) {
             return null;
         }
 

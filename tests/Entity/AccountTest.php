@@ -70,7 +70,7 @@ class AccountTest extends TestCase
     public function testSetAndGetCreateTime(): void
     {
         $account = new Account();
-        $dateTime = new \DateTime('2023-05-15 10:00:00');
+        $dateTime = new \DateTimeImmutable('2023-05-15 10:00:00');
         
         $account->setCreateTime($dateTime);
         $this->assertSame($dateTime, $account->getCreateTime());
@@ -79,7 +79,7 @@ class AccountTest extends TestCase
     public function testSetAndGetUpdateTime(): void
     {
         $account = new Account();
-        $dateTime = new \DateTime('2023-05-15 11:30:00');
+        $dateTime = new \DateTimeImmutable('2023-05-15 11:30:00');
         
         $account->setUpdateTime($dateTime);
         $this->assertSame($dateTime, $account->getUpdateTime());

@@ -25,13 +25,13 @@ class Account
     #[ORM\Column(type: Types::BIGINT, nullable: false, options: ['comment' => 'ID'])]
     private ?string $id = null;
 
-    #[ORM\Column(type: 'string', length: 64, options: ['comment' => '账号名称'])]
+    #[ORM\Column(type: Types::STRING, length: 64, options: ['comment' => '账号名称'])]
     private string $name;
 
-    #[ORM\Column(type: 'string', length: 64, unique: true, options: ['comment' => '客户端ID'])]
+    #[ORM\Column(type: Types::STRING, length: 64, unique: true, options: ['comment' => '客户端ID'])]
     private string $clientId;
 
-    #[ORM\Column(type: 'string', length: 64, options: ['comment' => '客户端密钥'])]
+    #[ORM\Column(type: Types::STRING, length: 64, options: ['comment' => '客户端密钥'])]
     private string $clientSecret;
 
     #[ORM\ManyToMany(targetEntity: Shop::class, mappedBy: 'accounts')]

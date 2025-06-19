@@ -30,10 +30,6 @@ class AdminMenuTest extends TestCase
         $this->assertInstanceOf(AdminMenu::class, $this->adminMenu);
     }
 
-    public function testInvokeMethodIsCallable(): void
-    {
-        $this->assertTrue(is_callable($this->adminMenu));
-    }
 
     public function testInvokeWithMockItem(): void
     {

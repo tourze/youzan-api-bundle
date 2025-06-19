@@ -9,13 +9,10 @@ use YouzanApiBundle\Repository\AccountRepository;
 
 class AccountRepositoryTest extends TestCase
 {
-    private ManagerRegistry $registry;
     private AccountRepository $repository;
     
     protected function setUp(): void
     {
-        // 创建模拟对象
-        $this->registry = $this->createMock(ManagerRegistry::class);
         
         // 创建被测仓库
         $this->repository = $this->createPartialMock(

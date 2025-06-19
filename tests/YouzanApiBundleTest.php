@@ -37,7 +37,6 @@ class YouzanApiBundleTest extends TestCase
     public function testBundlePathExists(): void
     {
         $path = $this->bundle->getPath();
-        $this->assertIsString($path);
         $this->assertNotEmpty($path);
     }
 } 

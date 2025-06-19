@@ -23,11 +23,6 @@ class YouzanApiExtensionTest extends TestCase
         $this->assertInstanceOf(Extension::class, $this->extension);
     }
 
-    public function testLoadMethodExists(): void
-    {
-        // 测试load方法是否存在
-        $this->assertTrue(method_exists($this->extension, 'load'));
-    }
 
     public function testExtensionImplementsLoadMethod(): void
     {
