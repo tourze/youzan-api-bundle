@@ -1,3 +1,6 @@
+parameters:
+  youzan_api.default_kdt_id: '%env(string:default::YOUZAN_DEFAULT_KDT_ID)%'
+
 services:
   # default configuration for services in *this* file
   _defaults:
@@ -11,3 +14,10 @@ services:
   YouzanApiBundle\Controller\:
     resource: '../../Controller/'
     tags: ['controller.service_arguments']
+
+  YouzanApiBundle\Service\AdminMenu:
+    public: true
+
+  YouzanApiBundle\Service\YouzanClientService:
+    arguments:
+      $defaultKdtId: '%youzan_api.default_kdt_id%'

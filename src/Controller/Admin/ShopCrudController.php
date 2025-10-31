@@ -11,7 +11,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
@@ -22,9 +21,11 @@ use YouzanApiBundle\Entity\Shop;
 
 /**
  * 有赞店铺管理控制器
+ *
+ * @extends AbstractCrudController<Shop>
  */
 #[AdminCrud(routePath: '/youzan/shop', routeName: 'youzan_shop')]
-class ShopCrudController extends AbstractCrudController
+final class ShopCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
@@ -42,54 +43,62 @@ class ShopCrudController extends AbstractCrudController
             ->setPageTitle('edit', '编辑有赞店铺')
             ->setHelp('index', '管理有赞平台的店铺信息，包括店铺ID、名称和Logo等')
             ->setDefaultSort(['id' => 'DESC'])
-            ->setSearchFields(['id', 'name', 'kdtId']);
+            ->setSearchFields(['id', 'name', 'kdtId'])
+        ;
     }
 
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id', 'ID')
             ->setMaxLength(9999)
-            ->hideOnForm();
+            ->hideOnForm()
+        ;
 
         yield IntegerField::new('kdtId', '有赞店铺ID')
             ->setHelp('有赞平台的店铺唯一标识符')
             ->setFormTypeOptions([
                 'attr' => [
                     'min' => 1,
-                    'placeholder' => '请输入有赞店铺ID'
-                ]
-            ]);
+                    'placeholder' => '请输入有赞店铺ID',
+                ],
+            ])
+        ;
 
         yield TextField::new('name', '店铺名称')
-            ->setHelp('店铺的显示名称');
+            ->setHelp('店铺的显示名称')
+        ;
 
-        yield ImageField::new('logo', '店铺Logo')
+        yield TextField::new('logo', '店铺Logo')
             ->setHelp('店铺的Logo图片URL')
             ->hideOnIndex()
             ->setFormTypeOptions([
                 'attr' => [
-                    'placeholder' => '请输入Logo图片URL'
-                ]
-            ]);
+                    'placeholder' => '请输入Logo图片URL',
+                ],
+            ])
+        ;
 
         yield AssociationField::new('accounts', '关联账号')
             ->setHelp('可以访问该店铺的有赞账号')
-            ->hideOnForm();
+            ->hideOnForm()
+        ;
 
         yield DateTimeField::new('createTime', '创建时间')
             ->hideOnForm()
-            ->setFormat('yyyy-MM-dd HH:mm:ss');
+            ->setFormat('yyyy-MM-dd HH:mm:ss')
+        ;
 
         yield DateTimeField::new('updateTime', '更新时间')
             ->hideOnForm()
-            ->setFormat('yyyy-MM-dd HH:mm:ss');
+            ->setFormat('yyyy-MM-dd HH:mm:ss')
+        ;
     }
 
     public function configureActions(Actions $actions): Actions
     {
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT, Action::DELETE]);
+        ;
     }
 
     public function configureFilters(Filters $filters): Filters
@@ -99,6 +108,7 @@ class ShopCrudController extends AbstractCrudController
             ->add(TextFilter::new('name', '店铺名称'))
             ->add(EntityFilter::new('accounts', '关联账号'))
             ->add(DateTimeFilter::new('createTime', '创建时间'))
-            ->add(DateTimeFilter::new('updateTime', '更新时间'));
+            ->add(DateTimeFilter::new('updateTime', '更新时间'))
+        ;
     }
 }

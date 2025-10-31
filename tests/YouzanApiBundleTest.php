@@ -1,42 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace YouzanApiBundle\Tests;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Tourze\PHPUnitSymfonyKernelTest\AbstractBundleTestCase;
 use YouzanApiBundle\YouzanApiBundle;
 
 /**
- * 测试YouzanApiBundle主类
+ * @internal
  */
-class YouzanApiBundleTest extends TestCase
+#[CoversClass(YouzanApiBundle::class)]
+#[RunTestsInSeparateProcesses]
+final class YouzanApiBundleTest extends AbstractBundleTestCase
 {
-    private YouzanApiBundle $bundle;
-
-    protected function setUp(): void
-    {
-        $this->bundle = new YouzanApiBundle();
-    }
-
-    public function testExtendsSymfonyBundle(): void
-    {
-        $this->assertInstanceOf(Bundle::class, $this->bundle);
-    }
-
-    public function testBundleCanBeInstantiated(): void
-    {
-        $bundle = new YouzanApiBundle();
-        $this->assertInstanceOf(YouzanApiBundle::class, $bundle);
-    }
-
-    public function testBundleNameIsCorrect(): void
-    {
-        $this->assertSame('YouzanApiBundle', $this->bundle->getName());
-    }
-
-    public function testBundlePathExists(): void
-    {
-        $path = $this->bundle->getPath();
-        $this->assertNotEmpty($path);
-    }
-} 
+}

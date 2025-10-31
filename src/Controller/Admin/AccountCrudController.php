@@ -20,9 +20,11 @@ use YouzanApiBundle\Entity\Account;
 
 /**
  * 有赞账号管理控制器
+ *
+ * @extends AbstractCrudController<Account>
  */
 #[AdminCrud(routePath: '/youzan/account', routeName: 'youzan_account')]
-class AccountCrudController extends AbstractCrudController
+final class AccountCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
@@ -40,20 +42,24 @@ class AccountCrudController extends AbstractCrudController
             ->setPageTitle('edit', '编辑有赞账号')
             ->setHelp('index', '管理有赞开放平台的API账号，包括应用ID和密钥配置')
             ->setDefaultSort(['id' => 'DESC'])
-            ->setSearchFields(['id', 'name', 'clientId']);
+            ->setSearchFields(['id', 'name', 'clientId'])
+        ;
     }
 
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id', 'ID')
             ->setMaxLength(9999)
-            ->hideOnForm();
+            ->hideOnForm()
+        ;
 
         yield TextField::new('name', '账号名称')
-            ->setHelp('便于识别的账号名称，如"生产环境账号"');
+            ->setHelp('便于识别的账号名称，如"生产环境账号"')
+        ;
 
         yield TextField::new('clientId', '客户端ID')
-            ->setHelp('有赞开放平台提供的应用ID');
+            ->setHelp('有赞开放平台提供的应用ID')
+        ;
 
         yield TextareaField::new('clientSecret', '客户端密钥')
             ->setHelp('有赞开放平台提供的应用密钥')
@@ -61,28 +67,32 @@ class AccountCrudController extends AbstractCrudController
             ->setFormTypeOptions([
                 'attr' => [
                     'rows' => 3,
-                    'placeholder' => '请输入客户端密钥'
-                ]
-            ]);
+                    'placeholder' => '请输入客户端密钥',
+                ],
+            ])
+        ;
 
         yield AssociationField::new('shops', '关联店铺')
             ->setHelp('该账号可以访问的有赞店铺')
-            ->hideOnForm();
+            ->hideOnForm()
+        ;
 
         yield DateTimeField::new('createTime', '创建时间')
             ->hideOnForm()
-            ->setFormat('yyyy-MM-dd HH:mm:ss');
+            ->setFormat('yyyy-MM-dd HH:mm:ss')
+        ;
 
         yield DateTimeField::new('updateTime', '更新时间')
             ->hideOnForm()
-            ->setFormat('yyyy-MM-dd HH:mm:ss');
+            ->setFormat('yyyy-MM-dd HH:mm:ss')
+        ;
     }
 
     public function configureActions(Actions $actions): Actions
     {
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT, Action::DELETE]);
+        ;
     }
 
     public function configureFilters(Filters $filters): Filters
@@ -92,6 +102,7 @@ class AccountCrudController extends AbstractCrudController
             ->add(TextFilter::new('clientId', '客户端ID'))
             ->add(EntityFilter::new('shops', '关联店铺'))
             ->add(DateTimeFilter::new('createTime', '创建时间'))
-            ->add(DateTimeFilter::new('updateTime', '更新时间'));
+            ->add(DateTimeFilter::new('updateTime', '更新时间'))
+        ;
     }
 }

@@ -3,21 +3,26 @@
 namespace YouzanApiBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Youzan\Open\Client;
 use Youzan\Open\Token;
 use YouzanApiBundle\Entity\Account;
+use YouzanApiBundle\Exception\AccessTokenException;
 use YouzanApiBundle\Repository\AccountRepository;
 
 /**
  * 有赞客户端服务
  */
+#[Autoconfigure(public: true)]
 class YouzanClientService
 {
+    /** @var array<string, Client> */
     private array $clientCache = [];
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly AccountRepository $accountRepository
+        private readonly AccountRepository $accountRepository,
+        private readonly string $defaultKdtId = '',
     ) {
     }
 
@@ -34,7 +39,12 @@ class YouzanClientService
         }
 
         // 创建新客户端
-        $resp = (new Token($clientId, $account->getClientSecret()))->getSelfAppToken('YOUR_KDT_ID');
+        $resp = (new Token($clientId, $account->getClientSecret()))->getSelfAppToken($this->defaultKdtId);
+
+        if (!isset($resp['access_token'])) {
+            throw new AccessTokenException('Failed to get access token from Youzan API');
+        }
+
         $client = new Client($resp['access_token']);
 
         // 缓存客户端
@@ -62,9 +72,9 @@ class YouzanClientService
     public function createAccount(string $name, string $clientId, string $clientSecret): Account
     {
         $account = new Account();
-        $account->setName($name)
-            ->setClientId($clientId)
-            ->setClientSecret($clientSecret);
+        $account->setName($name);
+        $account->setClientId($clientId);
+        $account->setClientSecret($clientSecret);
 
         $this->entityManager->persist($account);
         $this->entityManager->flush();

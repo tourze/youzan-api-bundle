@@ -14,26 +14,35 @@ use YouzanApiBundle\Entity\Shop;
 class AdminMenu implements MenuProviderInterface
 {
     public function __construct(
-        private readonly LinkGeneratorInterface $linkGenerator,
+        private readonly ?LinkGeneratorInterface $linkGenerator = null,
     ) {
     }
 
     public function __invoke(ItemInterface $item): void
     {
+        if (null === $this->linkGenerator) {
+            return;
+        }
+
         if (null === $item->getChild('有赞API管理')) {
             $item->addChild('有赞API管理');
         }
 
         $youzanMenu = $item->getChild('有赞API管理');
-        
+        if (null === $youzanMenu) {
+            return;
+        }
+
         // 账号管理菜单
         $youzanMenu->addChild('账号管理')
             ->setUri($this->linkGenerator->getCurdListPage(Account::class))
-            ->setAttribute('icon', 'fas fa-user-cog');
-        
+            ->setAttribute('icon', 'fas fa-user-cog')
+        ;
+
         // 店铺管理菜单
         $youzanMenu->addChild('店铺管理')
             ->setUri($this->linkGenerator->getCurdListPage(Shop::class))
-            ->setAttribute('icon', 'fas fa-store');
+            ->setAttribute('icon', 'fas fa-store')
+        ;
     }
-} 
+}
