@@ -157,9 +157,7 @@ final class AccountCrudControllerTest extends AbstractEasyAdminControllerTestCas
 
     public function testFilterFunctionalityWithNameFilter(): void
     {
-        $client = self::createClientWithDatabase();
-        $admin = $this->createAdminUser('admin@test.com', 'admin123');
-        $this->loginAsAdmin($client, 'admin@test.com', 'admin123');
+        $client = self::createAuthenticatedClient();
 
         // 创建测试数据
         $entityManager = self::getEntityManager();
@@ -192,9 +190,7 @@ final class AccountCrudControllerTest extends AbstractEasyAdminControllerTestCas
 
     public function testFilterFunctionalityWithClientIdFilter(): void
     {
-        $client = self::createClientWithDatabase();
-        $admin = $this->createAdminUser('admin@test.com', 'admin123');
-        $this->loginAsAdmin($client, 'admin@test.com', 'admin123');
+        $client = self::createAuthenticatedClient();
 
         // 创建测试数据
         $entityManager = self::getEntityManager();
@@ -227,9 +223,7 @@ final class AccountCrudControllerTest extends AbstractEasyAdminControllerTestCas
 
     public function testFilterFunctionalityWithDateFilter(): void
     {
-        $client = self::createClientWithDatabase();
-        $admin = $this->createAdminUser('admin@test.com', 'admin123');
-        $this->loginAsAdmin($client, 'admin@test.com', 'admin123');
+        $client = self::createAuthenticatedClient();
 
         // 创建测试数据 - 一个账号有明确的创建时间
         $entityManager = self::getEntityManager();
