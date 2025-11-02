@@ -39,9 +39,13 @@ class YouzanClientService
         }
 
         // 创建新客户端
-        $resp = (new Token($clientId, $account->getClientSecret()))->getSelfAppToken($this->defaultKdtId);
+        try {
+            $resp = (new Token($clientId, $account->getClientSecret()))->getSelfAppToken($this->defaultKdtId);
+        } catch (\Throwable $e) {
+            throw new AccessTokenException('Failed to get access token from Youzan API', 0, $e);
+        }
 
-        if (!isset($resp['access_token'])) {
+        if (!\is_array($resp) || !isset($resp['access_token'])) {
             throw new AccessTokenException('Failed to get access token from Youzan API');
         }
 
