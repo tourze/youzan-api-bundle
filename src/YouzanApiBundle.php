@@ -8,6 +8,7 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Tourze\BundleDependency\BundleDependencyInterface;
 use Tourze\EasyAdminMenuBundle\EasyAdminMenuBundle;
+use Tourze\DoctrineTimestampBundle\DoctrineTimestampBundle;
 
 class YouzanApiBundle extends Bundle implements BundleDependencyInterface
 {
@@ -18,6 +19,7 @@ class YouzanApiBundle extends Bundle implements BundleDependencyInterface
             TwigBundle::class => ['all' => true],
             EasyAdminBundle::class => ['all' => true],
             EasyAdminMenuBundle::class => ['all' => true],
+            DoctrineTimestampBundle::class => ['all' => true],
         ];
     }
 }
