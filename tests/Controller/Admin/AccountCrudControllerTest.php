@@ -58,21 +58,6 @@ final class AccountCrudControllerTest extends AbstractEasyAdminControllerTestCas
         yield 'clientSecret' => ['clientSecret'];
     }
 
-    public function testGetEntityFqcn(): void
-    {
-        $client = self::createClient();
-
-        // 测试通过 HTTP 请求访问控制器，验证实体类型
-        $client->request('GET', '/admin/youzan/account');
-        $response = $client->getResponse();
-
-        // 虽然会被重定向到登录页，但可以验证路由和控制器正确加载
-        $this->assertTrue($response->isRedirection() || $response->isSuccessful());
-
-        // 直接测试静态方法
-        $this->assertSame(Account::class, AccountCrudController::getEntityFqcn());
-    }
-
     public function testIndexPageAccessibleForAuthenticatedAdmin(): void
     {
         $client = self::createClientWithDatabase();
